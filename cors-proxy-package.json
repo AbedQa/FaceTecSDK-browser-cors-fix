@@ -1,0 +1,26 @@
+{
+    "name": "orange-cors-proxy",
+    "version": "1.0.0",
+    "description": "CORS proxy server for Orange APIs",
+    "main": "cors-proxy-server.js",
+    "scripts": {
+        "start": "node cors-proxy-server.js",
+        "dev": "nodemon cors-proxy-server.js"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "http-proxy-middleware": "^2.0.6",
+        "cors": "^2.8.5"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "keywords": [
+        "cors",
+        "proxy",
+        "orange",
+        "api"
+    ],
+    "author": "Orange Jood",
+    "license": "MIT"
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CORS Issue - Orange APIs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .error {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .solution {
+            background: #e8f5e8;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .code {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .step {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #2196f3;
+        }
+
+        h1 {
+            color: #1976d2;
+        }
+
+        h2 {
+            color: #424242;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🚫 CORS Issue with Orange APIs</h1>
+
+        <div class="error">
+            <h2>❌ The Problem</h2>
+            <p><strong>CORS (Cross-Origin Resource Sharing)</strong> is a browser security feature that blocks requests
+                from one domain (your app) to another domain (Orange APIs) unless the server explicitly allows it.</p>
+
+            <p><strong>Orange API server</strong> (`https://xpapis.orange.jo`) does NOT send CORS headers, so browsers
+                block the requests.</p>
+
+            <div class="code">
+                Error: Access to fetch at 'https://xpapis.orange.jo/xyz/sso/v1/dev/keycloak/user/login'
+                from origin 'https://orange-jood.web.app' has been blocked by CORS policy:
+                Response to preflight request doesn't pass access control check:
+                No 'Access-Control-Allow-Origin' header is present on the requested resource.
+            </div>
+        </div>
+
+        <div class="warning">
+            <h2>⚠️ Important</h2>
+            <p><strong>You CANNOT fix CORS by adding headers to your client code!</strong></p>
+            <p>CORS headers must be sent by the <strong>server</strong> (Orange API), not by your browser.</p>
+            <p>Adding `Access-Control-Allow-Origin` to your request headers does nothing.</p>
+        </div>
+
+        <h2>✅ Working Solutions</h2>
+
+        <div class="solution">
+            <h3>Solution 1: Browser Extension (Easiest)</h3>
+            <div class="step">
+                <p><strong>Step 1:</strong> Install "CORS Unblock" extension</p>
+                <p><strong>Chrome:</strong> <a href="https://chrome.google.com/webstore/search/cors%20unblock"
+                        target="_blank">CORS Unblock</a></p>
+                <p><strong>Firefox:</strong> <a href="https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/"
+                        target="_blank">CORS Everywhere</a></p>
+            </div>
+            <div class="step">
+                <p><strong>Step 2:</strong> Enable the extension (click the extension icon)</p>
+            </div>
+            <div class="step">
+                <p><strong>Step 3:</strong> Visit <a href="https://orange-jood.web.app"
+                        target="_blank">https://orange-jood.web.app</a> and test!</p>
+            </div>
+        </div>
+
+        <div class="solution">
+            <h3>Solution 2: Local Development</h3>
+            <div class="step">
+                <p><strong>Install live-server with CORS disabled:</strong></p>
+                <div class="code">
+                    npm install -g live-server
+                    live-server --cors .
+                </div>
+                <p>Then visit: <code>http://localhost:8080/sample-apps/sample-app-js/</code></p>
+            </div>
+        </div>
+
+        <div class="solution">
+            <h3>Solution 3: Chrome with Disabled Security</h3>
+            <div class="warning">
+                <p><strong>⚠️ Development Only!</strong> Do not use this for production.</p>
+            </div>
+            <div class="step">
+                <p><strong>Close all Chrome windows, then run:</strong></p>
+                <div class="code">
+                    /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+                    --user-data-dir="/tmp/chrome_dev" \
+                    --disable-web-security
+                </div>
+            </div>
+        </div>
+
+        <div class="solution">
+            <h3>Solution 4: Deploy Your Own CORS Proxy</h3>
+            <div class="step">
+                <p><strong>Deploy the CORS proxy server I created:</strong></p>
+                <div class="code">
+                    # Files ready: cors-proxy-server.js, cors-proxy-package.json
+                    # Deploy to Heroku, Railway, or Render (all free)
+                </div>
+            </div>
+        </div>
+
+        <div class="solution">
+            <h3>Solution 5: Contact Orange API Team</h3>
+            <div class="step">
+                <p><strong>Request Orange to add CORS headers:</strong></p>
+                <div class="code">
+                    Access-Control-Allow-Origin: https://orange-jood.web.app
+                    Access-Control-Allow-Methods: GET, POST, OPTIONS
+                    Access-Control-Allow-Headers: Content-Type, Authorization, deviceType, deviceName, apikey,
+                    versionNo, deviceId
+                </div>
+            </div>
+        </div>
+
+        <div class="step">
+            <h2>🎯 Quick Test</h2>
+            <p><strong>Recommended:</strong> Install the CORS Unblock extension and test immediately!</p>
+            <p><strong>Your app:</strong> <a href="https://orange-jood.web.app"
+                    target="_blank">https://orange-jood.web.app</a></p>
+        </div>
+    </div>
+</body>
+
+</html>
