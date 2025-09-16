@@ -6,10 +6,18 @@
  */
 
 function OrangeAuthenticationProcessor() {
-    // Firebase Functions URLs for CORS proxy (deployed to Firebase)
-    this.firebaseFunctionsURL = "https://us-central1-orange-jood.cloudfunctions.net";
-    this.orangeLoginURL = this.firebaseFunctionsURL + "/orangeLogin";
-    this.orangeSessionTokenURL = this.firebaseFunctionsURL + "/orangeSessionToken";
+    // CORS Proxy URLs - Update based on your deployment choice
+    // Option 1: Local testing (run ./test-local-proxy.sh first)
+    this.proxyURL = "http://localhost:3000";
+
+    // Option 2: Vercel (disable authentication protection first)
+    // this.proxyURL = "https://face-tec-sdk-browser-cors-ix9ifcbi8.vercel.app";
+
+    // Option 3: Firebase Functions (enable billing first)
+    // this.proxyURL = "https://us-central1-orange-jood.cloudfunctions.net";
+
+    this.orangeLoginURL = this.proxyURL + "/api/orange/login";
+    this.orangeSessionTokenURL = this.proxyURL + "/api/orange/session-token";
     this.accessToken = null;
     this.sessionToken = null;
 }
@@ -34,7 +42,7 @@ OrangeAuthenticationProcessor.prototype.login = function (callback) {
         "Content-Type": "application/json"
     };
 
-    console.log("Attempting Orange login via Firebase Functions:", this.orangeLoginURL);
+    console.log("Attempting Orange login via Vercel CORS proxy:", this.orangeLoginURL);
 
     fetch(this.orangeLoginURL, {
         method: "POST",
@@ -78,7 +86,7 @@ OrangeAuthenticationProcessor.prototype.getSessionToken = function (callback) {
         "Authorization": "Bearer " + this.accessToken
     };
 
-    console.log("Getting Orange session token via Firebase Functions:", this.orangeSessionTokenURL);
+    console.log("Getting Orange session token via Vercel CORS proxy:", this.orangeSessionTokenURL);
 
     fetch(this.orangeSessionTokenURL, {
         method: "GET",
